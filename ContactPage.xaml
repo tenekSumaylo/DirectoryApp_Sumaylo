@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DirectoryApp_Sumaylo.ContactPage"
+             xmlns:y ="clr-namespace:DirectoryApp_Sumaylo.ViewModels"
+             x:DataType="y:ContactViewModel"
+             Title="">
+    <VerticalStackLayout>
+        <VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Start">
+            <HorizontalStackLayout HorizontalOptions="Center"
+                           Spacing="30"
+                           VerticalOptions="Start"
+                           Margin="10,10,10,10">
+                <Grid ColumnDefinitions="100, 200"
+              RowDefinitions="50, 50, 50, 50, 50, 50"
+              VerticalOptions="Start"
+              HorizontalOptions="Start"
+              RowSpacing="10"
+              Margin="25"
+              >
+                    <Label Grid.Column="0"
+                   Grid.Row="0"
+                   Text="Type"
+                   FontSize="15"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Row="0"
+                            Grid.Column="1" Stroke="White">
+                        <HorizontalStackLayout 
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="End"
+                                   Spacing="4"
+                                   >
+                            <RadioButton Content ="Faculty"
+                                     VerticalOptions="Center"
+                                     IsChecked="{Binding FacultyCheck}"
+                                     />
+                            <RadioButton Content ="Student"
+                                     VerticalOptions="Center"
+                                     IsChecked="{Binding StudentCheck}"
+                                     />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Label Grid.Column="0"
+                   Grid.Row="1"
+                   Text="ID"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="1">
+                        <Entry ToolTipProperties.Text="Required"
+                               Text="{Binding ContactP.PersonID}">
+                            <!--#region -->
+                        </Entry>
+                    </Border>
+
+                    <Label Grid.Column="0"
+                   Grid.Row="2"
+                   Text="First Name"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="2">
+                        <Entry ToolTipProperties.Text="Required"
+                               Text="{Binding ContactP.FirstName}"/>
+                    </Border>
+
+                    <Label Grid.Column="0"
+                   Grid.Row="3"
+                   Text="Last Name"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="3">
+                        <Entry ToolTipProperties.Text="Required" Text="{Binding ContactP.LastName}"/>
+                    </Border>
+
+                    <Label Grid.Column="0"
+                   Grid.Row="4"
+                   Text="Email"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="4">
+                        <Entry ToolTipProperties.Text="Required."
+                               Text="{Binding ContactP.Email}"/>
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="100, 200"
+              RowDefinitions="50, 50, 50, 50, 50, 50"
+              VerticalOptions="Start"
+              HorizontalOptions="Start"
+              RowSpacing="10"
+              Margin="25"
+              >
+                    <Label Grid.Column="0"
+                   Grid.Row="1"
+                   Text="Mobile No."
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="1">
+                        <Entry ToolTipProperties.Text="Optional. Number Input Only"
+                               Text="{Binding ContactP.MobileNo}"/>
+                    </Border>
+
+
+                    <Label Grid.Column="0"
+                   Grid.Row="2"
+                   Text="School Program"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Row="2"
+                            Grid.Column="1" Stroke="White">
+                        <Picker ToolTipProperties.Text="Required"
+                                ItemsSource="{Binding SchoolDept}" SelectedIndex="{Binding SelectedIndex1}" 
+                                />
+                    </Border>
+                    <Label Grid.Column="0"
+                   Grid.Row="3"
+                   Text="Course"
+                   VerticalTextAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Grid.Row="3" 
+                            VerticalOptions="Start"
+                            Stroke="White">
+                        <Picker ToolTipProperties.Text="Required"
+                                ItemsSource="{Binding SchoolCourse}" SelectedIndex="{Binding SelectedIndex2}"
+                            />
+                    </Border>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Spacing="25">
+                <Button MinimumWidthRequest="80"
+                        Text="Submit"
+                        Command="{Binding OnSubmit}"/>
+                <Button MinimumWidthRequest="80"
+                        Text="Reset"
+                        Command="{Binding OnReset}"
+                        />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

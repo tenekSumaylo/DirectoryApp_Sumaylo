@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:y="clr-namespace:DirectoryApp_Sumaylo.ViewModels"
+             xmlns:z="clr-namespace:DirectoryApp_Sumaylo.Models"
+             x:Class="DirectoryApp_Sumaylo.HomePage"
+             x:DataType="y:HomeViewModel"
+             Title="HomePage">
+    <ScrollView>
+        <VerticalStackLayout Margin="30" Spacing="10">
+            <Button HorizontalOptions="End"
+                    WidthRequest="80"
+                    Command="{Binding goToContacts}"
+                    Text="+"/>
+            <Grid ColumnDefinitions="170,170,170,170,170, 170, 170, 170" HorizontalOptions="Center">
+                <Label Grid.Column="0" Text="ID"/>
+                <Label Grid.Column="1" Text="Last Name"/>
+                <Label Grid.Column="2" Text="First Name"/>
+                <Label Grid.Column="3" Text="School"/>
+                <Label Grid.Column="4" Text="Course"/>
+                <Label Grid.Column="5" Text="Email"/>
+                <Label Grid.Column="6" Text="Contact"/>
+                <Label Grid.Column="7" Text="Type "/>
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding ContactCollectionK}" HorizontalOptions="Center" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="z:ContactPerson">
+                        <Grid ColumnDefinitions="170,170,170,170,170, 170, 170, 170" >
+                            <Label Grid.Column="0" Text="{Binding PersonID}"/>
+                            <Label Grid.Column="1" Text="{Binding LastName}"/>
+                            <Label Grid.Column="2" Text="{Binding FirstName}"/>
+                            <Label Grid.Column="3" Text="{Binding SchoolProgram}"/>
+                            <Label Grid.Column="4" Text="{Binding Course}"/>
+                            <Label Grid.Column="5" Text="{Binding Email}"/>
+                            <Label Grid.Column="6" Text="{Binding MobileNo}"/>
+                            <Label Grid.Column="7" Text="{Binding Type}"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
