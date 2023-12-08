@@ -20,8 +20,8 @@ namespace DirectoryApp_Sumaylo.ViewModels
         public ICommand OnReset => new Command(OnResetForm);
         public ICommand OnSubmit => new Command(DisplayMessage);
         public Student StudInfo { get; set; }
-        public bool MaleCheck { get; set; }
-        public bool FemaleCheck { get; set;}
+        private bool maleCheck;
+        private bool femaleCheck;
 
         public RegisterViewModel()
         {
@@ -29,6 +29,25 @@ namespace DirectoryApp_Sumaylo.ViewModels
             StudInfo = new Student();
             SchoolCourse = SchoolPrograms( 0 );
             _SaveService = new JSONService();
+        }
+
+        public bool MaleCheck
+        {
+            get => maleCheck;
+            set { 
+                maleCheck = value;
+                OnPropertyChanged( nameof( MaleCheck ) );
+            }
+        }
+
+        public bool FemaleCheck
+        {
+            get => femaleCheck;
+            set
+            {
+                femaleCheck = value;
+                OnPropertyChanged( nameof( FemaleCheck ) );
+            }
         }
 
         public string ConfirmPass { 
@@ -44,11 +63,11 @@ namespace DirectoryApp_Sumaylo.ViewModels
 
         private int ValidateForm()
         {
-            if ( isExistingUser() )
+            if (isExistingUser())
             {
                 return 0;
             }
-            else if (!CheckNumbers(StudInfo.StudentID) || string.IsNullOrEmpty(StudInfo.StudentID) || string.IsNullOrEmpty(StudInfo.FirstName) || string.IsNullOrEmpty(StudInfo.LastName) || !EmailCheck(StudInfo.Email) || string.IsNullOrEmpty(StudInfo.Email) || string.IsNullOrEmpty(StudInfo.Password) || string.IsNullOrEmpty(ConfirmPass) || SelectedIndex1 == 0 || SelectedIndex2 == 0 || SelectedIndex3 == 0) {
+            else if (!CheckNumbers(StudInfo.StudentID) || string.IsNullOrEmpty(StudInfo.StudentID) || string.IsNullOrEmpty(StudInfo.FirstName) || string.IsNullOrEmpty(StudInfo.LastName) || !EmailCheck(StudInfo.Email) || string.IsNullOrEmpty(StudInfo.Email) || string.IsNullOrEmpty(StudInfo.Password) || string.IsNullOrEmpty(ConfirmPass) || SelectedIndex1 == 0 || SelectedIndex3 == 0) {
                 return -1;
             }
             else if (!string.IsNullOrEmpty(StudInfo.MobileNo) && !CheckNumbers(StudInfo.MobileNo))
@@ -56,6 +75,10 @@ namespace DirectoryApp_Sumaylo.ViewModels
                 return -1;
             }
             else if (StudInfo.Password != ConfirmPass)
+            {
+                return -1;
+            }
+            else if ( StudInfo.Password.Length <= 7 )
             {
                 return -1;
             }
@@ -72,6 +95,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
             StudInfo.YearLevel = Rewrite(SelectedIndex3, Year);
             StudInfo.Course = Rewrite(SelectedIndex2, SchoolCourse);
             StudInfo.SchoolProgram = Rewrite(SelectedIndex1, SchoolDept);
+            StudInfo.BirthDate = DateTa.ToString();
             return 1;
         }
 
@@ -112,6 +136,8 @@ namespace DirectoryApp_Sumaylo.ViewModels
             SelectedIndex1 = 0;
             SelectedIndex3 = 0;
             DateTa = DateTime.Now;
+            MaleCheck = false;
+            FemaleCheck = false;
             StudInfo.ClearAllFields();
         }
 

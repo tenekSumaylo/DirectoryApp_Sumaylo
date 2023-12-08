@@ -20,7 +20,7 @@
 
         <VerticalStackLayout HorizontalOptions="Center"
                          VerticalOptions="Start">
-            <Button Command="{Binding OnReturn}" WidthRequest="130" HorizontalOptions="End" Text="Back"/>
+            <Button Command="{Binding OnReturn}" WidthRequest="130" HorizontalOptions="End" Text="Back" Margin="20"/>
             <HorizontalStackLayout HorizontalOptions="Center"
                            Spacing="30"
                            VerticalOptions="Start"

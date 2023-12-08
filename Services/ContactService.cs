@@ -12,11 +12,10 @@ namespace DirectoryApp_Sumaylo.Services
     public class ContactService
     {
         private ObservableCollection<ContactPerson> contactP;
-        string filePath = FileSystem.Current.AppDataDirectory + "/CONTACTDATABASE/";
+        string filePath = FileSystem.Current.AppDataDirectory + "/USERDATABASE/";
         public ContactService()
         {
             ContactP = new ObservableCollection<ContactPerson>();
-            GetData();
         }
 
         public ObservableCollection<ContactPerson> ContactP
@@ -27,35 +26,32 @@ namespace DirectoryApp_Sumaylo.Services
                 contactP = value;
             }
         }
-        public ObservableCollection<ContactPerson> GetData()
+        public ObservableCollection<ContactPerson> GetData( string ID )
         {
-            var k = new FileInfo(filePath + "Contacts.txt");
-            if ( !File.Exists(filePath + "Contacts.txt" ) || !Directory.Exists( filePath) )
+            var k = new FileInfo(filePath + $"S[{ID}].txt");
+            if ( !File.Exists(filePath + $"S[{ID}].txt" ) )
             {
-                Directory.CreateDirectory(filePath);
-                File.Create(filePath + "Contacts.txt");
-
+                return new ObservableCollection<ContactPerson>();
             }
             if (k.Length == 0)
                 return new ObservableCollection<ContactPerson>();
-            string json = File.ReadAllText(filePath + "Contacts.txt");
+            string json = File.ReadAllText(filePath + $"S[{ID}].txt");
             ContactP = JsonSerializer.Deserialize<ObservableCollection<ContactPerson>>(json);
             return ContactP;
         }
 
 
-        public void AddData(ContactPerson ContactK, string data)
+        public void AddData(ContactPerson ContactK, string data, string ID)
         {
             if (ContactK != null)
             {
-                GetData();
+                GetData( ID );
                 ContactP.Add(ContactK);
                 var saveToFile = string.Empty;
                 var saveID = string.Empty;
                 saveToFile = JsonSerializer.Serialize(ContactP);
-                saveID = JsonSerializer.Serialize(ContactK);
-                File.WriteAllText(filePath + "Contacts.txt", saveToFile);
-                File.WriteAllText(filePath + $"S{ContactK.PersonID}", saveID);
+                File.WriteAllText(filePath + $"S[{ID}].txt", saveToFile);
+
             }
         }
     }

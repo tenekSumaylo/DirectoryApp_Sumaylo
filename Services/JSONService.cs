@@ -51,7 +51,7 @@ namespace DirectoryApp_Sumaylo.Services
                 saveToFile = JsonSerializer.Serialize(studentCollection);
                 saveID = JsonSerializer.Serialize( student );
                 File.WriteAllText(filePath, saveToFile);
-                File.WriteAllText( filePathID + $"S{student.StudentID}", saveID );
+                File.WriteAllText( filePathID + $"S[{student.StudentID}].txt", "");
             }
         }
     }

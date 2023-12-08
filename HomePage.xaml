@@ -8,10 +8,13 @@
              Title="HomePage">
     <ScrollView>
         <VerticalStackLayout Margin="30" Spacing="10">
-            <Button HorizontalOptions="End"
-                    WidthRequest="80"
-                    Command="{Binding goToContacts}"
-                    Text="+"/>
+            <HorizontalStackLayout Spacing="1150">
+                <Label Text = "{Binding MessageOut}" HorizontalOptions="Start" FontSize="15"/>
+                <Button HorizontalOptions="End"
+                        WidthRequest="80"
+                        Command="{Binding goToContacts}"
+                        Text="+"/>
+            </HorizontalStackLayout>
             <Grid ColumnDefinitions="170,170,170,170,170, 170, 170, 170" HorizontalOptions="Center">
                 <Label Grid.Column="0" Text="ID"/>
                 <Label Grid.Column="1" Text="Last Name"/>

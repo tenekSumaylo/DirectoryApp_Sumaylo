@@ -19,7 +19,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
         private List<string> schoolCourse;
         private int selectedIndex1;
         private int selectedIndex2;
-        public int SelectedIndex3 {  get; set; }
+        private int selectedIndex3;
         public List<string> Year { get; set; }
         public BaseViewModel() {
             Year = new List<string>() { "+-SELECT-+", "1st", "2nd", "3rd", "4th" };
@@ -28,6 +28,16 @@ namespace DirectoryApp_Sumaylo.ViewModels
             SelectedIndex1 = 0;
             SelectedIndex2 = 0;
             SelectedIndex3 = 0;
+        }
+
+        public int SelectedIndex3
+        {
+            get => selectedIndex3;
+            set
+            {
+                selectedIndex3 = value;
+                OnPropertyChanged(nameof(SelectedIndex3));
+            }
         }
         public List<string> SchoolDept
         {
@@ -80,7 +90,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
             }
         }
 
-    public static List<string> Schools() => new List<string>() { "+-Select-+", "School of Allied Medical Sciences", "School of Arts and Sciences", "School of Business and Management", "School of Computer Studies", "School of Education", "School Of Engineering" };
+    public static List<string> Schools() => new List<string>() { "+-SELECT-+", "School of Allied Medical Sciences", "School of Arts and Sciences", "School of Business and Management", "School of Computer Studies", "School of Education", "School Of Engineering" };
 
     public static List<string> SchoolPrograms(int index) {
             if (index == 1)
@@ -109,7 +119,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
             }
             else
             {
-                return new List<string>() { "+-Select-+" };
+                return new List<string>() { "+-SELECT-+" };
             }
         }
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

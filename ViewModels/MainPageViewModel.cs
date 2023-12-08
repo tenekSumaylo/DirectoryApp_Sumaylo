@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
+
 namespace DirectoryApp_Sumaylo.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
@@ -14,6 +16,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
         private string output;
         private string studentID;
         private string password;
+        readonly string filePath = FileSystem.Current.AppDataDirectory + "/USERDATABASE/Users.txt";
         public ICommand OnNavigateToRegister => new Command(NavigateToRegister);
         public ICommand OnLog => new Command(OnLogging);
         JSONService serviceLog;
@@ -55,9 +58,14 @@ namespace DirectoryApp_Sumaylo.ViewModels
         }
         public async void OnLogging()
         {
-            if (FindMatch()) {
+            var k = new FileInfo( filePath );
+            if (FindMatch() == 1 ) {
                 Output = "Login Successful";
-                await Shell.Current.GoToAsync(nameof(HomePage));
+                await Shell.Current.GoToAsync($"{nameof(HomePage)}?StudentID={StudentID}");
+            }
+            else if ( FindMatch() == 2 || k.Length == 0 )
+            {
+                Output = "User does not exist. Please Register";
             }
             else if ( string.IsNullOrEmpty(StudentID) || string.IsNullOrEmpty(Password ) )
             {
@@ -70,18 +78,26 @@ namespace DirectoryApp_Sumaylo.ViewModels
 
         }
 
-        bool FindMatch()
+        int FindMatch()
         {
+            int k = 0;
             serviceLog.GetData();
             foreach( Student stud in serviceLog.StudentCollection )
             {
                 if ( stud.StudentID == StudentID && stud.Password == Password )
                 {
-                    return true;
+                    return 1;
+                }
+                else if ( stud.StudentID != StudentID )
+                {
+                    k = 2;
+                }
+                else if ( stud.StudentID == StudentID )
+                {
+                    k = 0;
                 }
             }
-
-            return false;
+            return k;
         }
     }
 }

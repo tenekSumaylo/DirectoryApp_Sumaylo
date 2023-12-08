@@ -1,19 +1,23 @@
 ﻿using DirectoryApp_Sumaylo.Models;
 using DirectoryApp_Sumaylo.Services;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DirectoryApp_Sumaylo.ViewModels
 {
+    [QueryProperty(nameof(StudentID), nameof(StudentID))]
     public class ContactViewModel : BaseViewModel
     {
         public ContactPerson ContactP { get; set; }
         private bool studentCheck;
         private bool facultyCheck;
+        private string studentID;
         public ICommand OnReset => new Command(OnResetForm);
         public ICommand OnSubmit => new Command(DisplayMessage);
         public ContactService ServiceMode;
@@ -23,26 +27,67 @@ namespace DirectoryApp_Sumaylo.ViewModels
             ContactP = new ContactPerson();
         }
 
-        public async void GoBack() => await Shell.Current.GoToAsync("HomePage"); 
+        public async void GoBack() => await Shell.Current.GoToAsync($"{nameof(HomePage)}?StudentID={StudentID}");
+
+        public string StudentID
+        {
+            get => studentID;
+            set
+            {
+                studentID = value;
+                OnPropertyChanged(nameof(StudentID));
+            }
+        }
 
         private void OnResetForm()
         {
             SelectedIndex1 = 0;
-            SelectedIndex3 = 0;
+            FacultyCheck = false;
+            StudentCheck = false;
             ContactP.ClearAllFields();
         }
         public bool StudentCheck { 
             get => studentCheck; 
-            set { studentCheck = value; OnPropertyChanged(nameof(StudentCheck)); }
+            set 
+            { 
+                studentCheck = value; 
+                OnPropertyChanged(nameof(StudentCheck));
+                if (value == true)
+                {
+                    SchoolDept = Schools();
+                    SelectedIndex1 = 0;
+                    SelectedIndex2 = 0;
+                }
+            }
         }
         public bool FacultyCheck
         {
             get => facultyCheck;
-            set {facultyCheck = value; OnPropertyChanged(nameof(FacultyCheck)); }
+            set {
+                facultyCheck = value; 
+                OnPropertyChanged(nameof(FacultyCheck));
+                if (value == true)
+                {
+                    SchoolDept = new List<string>() {};
+                    SchoolCourse = new List<string>() {};
+                }
+            }
         }
         private int ValidateForm()
         {
-            if (!CheckNumbers(ContactP.PersonID)  || string.IsNullOrEmpty(ContactP.FirstName) || string.IsNullOrEmpty(ContactP.LastName) || !EmailCheck(ContactP.Email) ||  SelectedIndex1 == 0 || SelectedIndex2 == 0 )
+            if (!CheckNumbers(ContactP.PersonID)  || string.IsNullOrEmpty(ContactP.FirstName) || string.IsNullOrEmpty(ContactP.LastName) || !EmailCheck(ContactP.Email) )
+            {
+                return -1;
+            }
+            else if ( SelectedIndex1 == 0 && FacultyCheck == false )
+            {
+                return -1;
+            }
+            else if ( FacultyCheck == true && ContactP.PersonID.Length != 4 )
+            {
+                return -1;
+            }
+            else if ( StudentCheck == true && ContactP.PersonID.Length != 5 )
             {
                 return -1;
             }
@@ -87,7 +132,7 @@ namespace DirectoryApp_Sumaylo.ViewModels
             else
             {
                 _ = Shell.Current.DisplayAlert("SUCCESS!!!", "SUCCESSFUL REGISTRATION", "Close");
-                ServiceMode.AddData(ContactP, ContactP.PersonID);
+                ServiceMode.AddData(ContactP, ContactP.PersonID, StudentID);
                 GoBack();
             }
         }
